@@ -29,6 +29,7 @@ commands:
             #  cd ~/project/backend
             #  npm install
             #  Add revert code here. You can find this in the Getting Started section.
+            #
               exit 1
             fi
             
@@ -71,7 +72,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-                   
+
 workflows:
   default:
     jobs:
