@@ -139,6 +139,10 @@ jobs:
              cd backend
              npm install
              npm audit fix --audit-level=critical --force
+             npm update set-value --depth 8
+             npm update union-value --depth 8
+             npm update ts-node --depth 1
+             npm update mixin-deep --depth 7
              # npm install oauth-sign@^0.9.0
              npm audit --audit-level=critical
 
