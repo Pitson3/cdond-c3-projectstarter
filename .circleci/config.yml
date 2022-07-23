@@ -208,8 +208,8 @@ jobs:
                 # You can get this ID in the section where you registered the SSH Key
                 fingerprints: ["50:f5:a9:48:6e:b6:d8:82:3b:53:08:ed:d6:a6:c6:a6"] 
       # attach workspace
-      - attach_workspace:
-          at: ~/ansible
+      #- attach_workspace:
+         # at: ~/ansible
 
       - run:
           name: Install dependencies
@@ -228,6 +228,7 @@ jobs:
             ansible-playbook -i inventory.txt configure-server.yml
             #exit 1
       # Here's where you will add some code to rollback on failure 
+      - destroy-environment
 
 workflows:
   default:
