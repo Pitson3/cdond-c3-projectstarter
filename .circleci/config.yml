@@ -191,7 +191,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure 
       - destroy-environment 
   
@@ -208,18 +208,18 @@ jobs:
                 # You can get this ID in the section where you registered the SSH Key
                 fingerprints: ["50:f5:a9:48:6e:b6:d8:82:3b:53:08:ed:d6:a6:c6:a6"] 
       # attach workspace
-      #- attach_workspace:
-         # at: ~/ansible
+      - attach_workspace:
+          at: ~/.circleci/ansible/
 
       - run:
           name: Install dependencies
           command: |
             # Your code here
             apk add --update ansible
-            #yum install -y tar gzip
-            #curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            #unzip awscliv2.zip
-            #sudo ./aws/install
+            yum install -y tar gzip
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
             #exit 1
       - run:
           name: Configure server
