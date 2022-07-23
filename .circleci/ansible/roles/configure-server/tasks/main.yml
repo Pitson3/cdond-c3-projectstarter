@@ -1,0 +1,49 @@
+---
+- name: "update apt packages."
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
+
+- name: "Install Python"
+  become: true
+  apt:
+    name: ["python"]
+    state: latest
+    update_cache: yes
+
+- name: "Install Nodejs"
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: true
+    production: true
+    state: present
+
+#Adapted from the classroom solution
+- name: "create ~/web"
+  file:
+    path: ~/web
+    state: directory
+    mode: '0755'
+
+- name: "Install index.js"
+  copy:
+    src: "files/index.js"
+    dest: "~/web/index.js"
+    backup: yes 
+
+#Experiment the clasroom solution
+- name: "start server"
+  shell: pm2 start ~/web/index.js -f
