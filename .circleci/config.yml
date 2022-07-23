@@ -199,6 +199,7 @@ jobs:
     docker:
       # Docker image here that supports Ansible
       - image: python:3.7-alpine3.11
+    #attach workspace 
     steps:
       # Checkout code from git
       - checkout
@@ -207,7 +208,8 @@ jobs:
                 # You can get this ID in the section where you registered the SSH Key
                 fingerprints: ["50:f5:a9:48:6e:b6:d8:82:3b:53:08:ed:d6:a6:c6:a6"] 
       # attach workspace
-      - working_directory: ~/ansible
+      - attach_workspace:
+          at: ~/ansible
 
       - run:
           name: Install dependencies
