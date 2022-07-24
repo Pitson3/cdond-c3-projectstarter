@@ -198,7 +198,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      - image: cimg/base:stable
     #attach workspace 
     steps:
       # Checkout code from git
@@ -209,23 +209,26 @@ jobs:
                 fingerprints: ["50:f5:a9:48:6e:b6:d8:82:3b:53:08:ed:d6:a6:c6:a6"] 
       # attach workspace
       - attach_workspace:
-          at: ~/project/.circleci/ansible/
+          at: ~/
 
       - run:
           name: Install dependencies
           command: |
             # Your code here
-            apk add --update ansible
+            #sudo apt-get update && sudo apt-get install -yy less
             apk add --update curl
             #yum install -y tar gzip
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
-            ./aws/install
+            sudo ./aws/install
+            apk add --update ansible
             #exit 1
       - run:
           name: Configure server
           command: |
             # Your code here
+            cd .circleci/ansible
+            cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
             #exit 1
       # Here's where you will add some code to rollback on failure 
