@@ -215,13 +215,20 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            #sudo apt-get update && sudo apt-get install -yy less
-            apk add --update curl
+            sudo apt-get update && sudo apt-get install -yy less
+            sudo apt install curl
+            #apk add --update curl
             #yum install -y tar gzip
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-            apk add --update ansible
+
+            #install ansible 
+            sudo apt update  
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+            #apk add --update ansible
             #exit 1
       - run:
           name: Configure server
