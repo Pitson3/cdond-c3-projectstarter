@@ -18,6 +18,17 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
             #exit 1
 
+  install_awscli:
+    description: install aws cli v2
+    steps:
+      - run:
+          name: install aws cli v2
+          command: |
+            sudo apt-get update && sudo apt-get install -yy less
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -191,11 +202,11 @@ jobs:
           command: |
             # Your code here
             #aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory
-            aws ec2 describe-instances \
+            BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> inventory.txt
-            
+              --output text)
+            echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
             # exit 1
       - persist_to_workspace:
@@ -221,18 +232,10 @@ jobs:
       - attach_workspace:
           at: ~/
 
+      - install_awscli
       - run:
           name: Install dependencies
           command: |
-            # Your code here
-            sudo apt-get update && sudo apt-get install -yy less
-            sudo apt install curl
-            #apk add --update curl
-            #yum install -y tar gzip
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-
             #install ansible 
             sudo apt update  
             sudo apt install software-properties-common -y
@@ -258,6 +261,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - install_awscli
       - restore_cache:
           keys: [backend-migrate]
       - run:
