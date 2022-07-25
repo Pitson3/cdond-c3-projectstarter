@@ -38,7 +38,7 @@
 
 - name: "extract zipped artifact"
   ansible.builtin.unarchive:
-    src: "files/artifact.tar.gz"
+    src: artifact.tar.gz
     dest: ~/backend-app
 
 - name: "install Node Dependences"
