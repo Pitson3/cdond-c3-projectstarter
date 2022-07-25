@@ -280,7 +280,7 @@ jobs:
             npm update mkdirp --depth 6 
             # npm install oauth-sign@^0.9.0
             npm audit --audit-level=critical
-            npm run migrations  > migrations_dump.txt
+            npm run migrations >> migrations_dump.txt
             cat migrations_dump.txt
             #exit 1
       - run:
