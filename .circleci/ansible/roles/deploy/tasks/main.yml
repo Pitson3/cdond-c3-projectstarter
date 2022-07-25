@@ -1,0 +1,24 @@
+---
+
+- name: "create backend-app directory"
+  file:
+    path: ~/backend-app
+    state: directory
+
+- name: "extract zipped artifact"
+  unarchive:
+    src: artifact.tar.gz
+    dest: ~/backend-app
+
+- name: "install Node Dependences"
+  shell: |
+    cd ~/backend-app
+    npm install
+
+- name: "Use PM2 to run backend-app"
+  shell: |
+    cd ~/backend-app/dist
+    pm2 stop default
+    pm2 stop default
+    pm2 start npm -- start
+    #pm2 start main.js

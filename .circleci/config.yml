@@ -344,6 +344,57 @@ jobs:
       - destroy-environment
       - revert-migrations
 
+  deploy-backend:
+    docker:
+      # Docker image here that supports Ansible
+      - image: cimg/base:stable
+    steps:
+      # Checkout code from git
+      - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+                # You can get this ID in the section where you registered the SSH Key
+                fingerprints: ["50:f5:a9:48:6e:b6:d8:82:3b:53:08:ed:d6:a6:c6:a6"] 
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - install_awscli
+      - run:
+          name: Install Ansible 
+          command: |
+            #install ansible 
+            sudo apt update  
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+            #apk add --update ansible
+            #exit 1
+      - run:
+          name: Install Nodejs 
+          command: |
+            # your code here
+            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            sudo apt install -y nodejs
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+            cd backend
+            npm install
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment
+      - revert-migrations
+
 workflows:
   default:
     jobs:
@@ -368,4 +419,6 @@ workflows:
       - run-migrations:
           requires: [configure-infrastructure]
       - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
           requires: [run-migrations]
