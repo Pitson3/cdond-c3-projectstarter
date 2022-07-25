@@ -38,12 +38,12 @@
     state: directory
     mode: '0755'
 
-- name: "Install index.js"
-  copy:
-    src: "files/index.js"
-    dest: "~/web/index.js"
-    backup: yes 
+#- name: "Install index.js"
+#  copy:
+#    src: "files/index.js"
+#    dest: "~/web/index.js"
+#    backup: yes 
 
 #Experiment the clasroom solution
-- name: "start server"
-  shell: pm2 start ~/web/index.js -f
+#- name: "start server"
+#  shell: pm2 start ~/web/index.js -f
