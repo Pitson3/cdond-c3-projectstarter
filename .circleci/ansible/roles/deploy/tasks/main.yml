@@ -1,5 +1,36 @@
 ---
+- name: "update apt packages."
+  become: yes
+  apt:
+    update_cache: yes
 
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
+
+- name: "Install Python"
+  become: true
+  apt:
+    name: ["python"]
+    state: latest
+    update_cache: yes
+
+- name: "Install Nodejs"
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: true
+    production: true
+    state: present
+    
 - name: "create backend-app directory"
   file:
     path: ~/backend-app
