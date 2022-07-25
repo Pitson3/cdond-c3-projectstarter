@@ -234,6 +234,8 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
+
+      - install_awscli
       - run:
           name: Install dependencies
           command: |
@@ -244,8 +246,6 @@ jobs:
             sudo apt install ansible -y
             #apk add --update ansible
             #exit 1
-
-            - install_awscli
       - run:
           name: Configure server
           command: |
