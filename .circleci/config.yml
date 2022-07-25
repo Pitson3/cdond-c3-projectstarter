@@ -25,6 +25,9 @@ commands:
           name: install aws cli v2
           command: |
             sudo apt-get update && sudo apt-get install -yy less
+            sudo apt install curl
+            #apk add --update curl
+            #yum install -y tar gzip
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
@@ -231,8 +234,6 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-
-      - install_awscli
       - run:
           name: Install dependencies
           command: |
@@ -243,6 +244,8 @@ jobs:
             sudo apt install ansible -y
             #apk add --update ansible
             #exit 1
+
+            - install_awscli
       - run:
           name: Configure server
           command: |
