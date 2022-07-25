@@ -30,14 +30,14 @@
     global: true
     production: true
     state: present
-    
+
 - name: "create backend-app directory"
   file:
     path: ~/backend-app
     state: directory
 
 - name: "extract zipped artifact"
-  unarchive:
+  ansible.builtin.unarchive:
     src: artifact.tar.gz
     dest: ~/backend-app
 
