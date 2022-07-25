@@ -270,10 +270,10 @@ jobs:
             cd backend
             npm install
             # Run and save the migration output
-            npm audit fix --force --audit-level=critical
-            npm audit fix --force --audit-level=critical
-            npm audit --audit-level=critical
-            npm run --max_old_space_size=4096 migrations > migrations_dump.txt
+            #npm audit fix --force --audit-level=critical
+            #npm audit fix --force --audit-level=critical
+            #npm audit --audit-level=critical
+            npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
             #exit 1
       - run:
