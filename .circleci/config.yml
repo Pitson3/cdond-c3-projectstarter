@@ -270,17 +270,10 @@ jobs:
             cd backend
             npm install
             # Run and save the migration output
-            npm audit fix --audit-level=critical --force
-            npm update set-value --depth 8
-            npm update union-value --depth 8
-            #npm update ts-node --depth 1
-            npm update mixin-deep --depth 7
-            npm update ts-node --depth 1
-            npm install --save-dev webpack@5.73.0
-            npm update mkdirp --depth 6 
-            # npm install oauth-sign@^0.9.0
+            npm audit fix --force --audit-level=critical
+            npm audit fix --force --audit-level=critical
             npm audit --audit-level=critical
-            npm run migrations >> migrations_dump.txt
+            npm run --max_old_space_size=4096 migrations > migrations_dump.txt
             cat migrations_dump.txt
             #exit 1
       - run:
