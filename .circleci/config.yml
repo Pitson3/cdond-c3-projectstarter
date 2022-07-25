@@ -34,14 +34,14 @@ commands:
       # Add parameter here 
       workflow_ID:
         type: string
-        default: ${CIRCL_WORKFLOW_ID:0:7}   
+        default: ${CIRCLE_WORKFLOW_ID:0:7}   
     steps:
       - run:
           name: Revert migrations
           # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            $SUCCESS = $(curl --insecure https://kvdb.io/9GE4jRtKznmVKRfvdBABBe/migration_<< parameters.workflow_ID >>)
+            SUCCESS = $(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.workflow_ID >>)
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
