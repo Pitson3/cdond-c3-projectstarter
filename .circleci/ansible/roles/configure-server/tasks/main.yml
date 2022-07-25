@@ -32,11 +32,11 @@
     state: present
 
 #Adapted from the classroom solution
-- name: "create ~/web"
-  file:
-    path: ~/web
-    state: directory
-    mode: '0755'
+#- name: "create ~/web"
+ # file:
+   # path: ~/web
+    #state: directory
+   # mode: '0755'
 
 #- name: "Install index.js"
 #  copy:
