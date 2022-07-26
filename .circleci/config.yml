@@ -379,19 +379,15 @@ jobs:
           keys: [backend-build]
 
       - run:
-          name: Install node dependencies
-          command: |
-            cd backend
-            npm install
-      - run:
           name: Deploy backend
           command: |
             # your code here
             cd backend
+            npm i
             npm run build
-            tar -czf artifact.tar.gz dist/* package*
             cd ..
-            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+            # Zip the directory
+            tar -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
