@@ -35,12 +35,12 @@
   file:
     path: ~/backend-app
     state: directory
-    mode: '0755'
+    #mode: '0755'
 
 - name: "extract zipped artifact"
-  ansible.builtin.unarchive:
+  unarchive:
     src: artifact.tar.gz
-    remote_src: yes
+    #remote_src: yes
     dest: ~/backend-app
 
 - name: "install Node Dependences"
