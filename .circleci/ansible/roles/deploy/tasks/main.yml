@@ -39,7 +39,7 @@
 
 - name: "extract zipped artifact"
   ansible.builtin.unarchive:
-    src: artifact.tar.gz
+    src: artifact.gz
     #remote_src: yes
     dest: ~/backend-app
 
