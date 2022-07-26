@@ -384,14 +384,9 @@ jobs:
             # your code here
             cd backend
             npm i
-            npm audit fix --force --audit-level=critical
-            npm audit fix --force --audit-level=critical
-            npm audit --audit-level=critical
             npm run build
-            tar -czf artifact.tar.gz .
-            ls
+            tar -czf artifact.tar.gz
             cd ..
-            ls
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
