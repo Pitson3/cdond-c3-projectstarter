@@ -50,6 +50,14 @@ commands:
             #
              # exit 1
             fi
+  install_nodejs_13:
+    description: install nodejs
+    steps:
+      - run:
+          name: install nodejs
+          command: |
+            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            sudo apt install -y nodejs
             
 jobs:
   build-frontend:
@@ -206,7 +214,7 @@ jobs:
               --output text)
             echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
-            # exit 1
+            # exit 1 #
       - persist_to_workspace:
           root: ~/
           paths:
