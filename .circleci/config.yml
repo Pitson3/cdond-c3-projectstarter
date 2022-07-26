@@ -377,16 +377,22 @@ jobs:
             sudo apt install -y nodejs
       - restore_cache:
           keys: [backend-build]
+
+      - run:
+          name: Install node dependencies
+          command: |
+            cd backend
+            npm install
       - run:
           name: Deploy backend
           command: |
             # your code here
             cd backend
-            npm install
             npm run build
             cd ..
             # Zip the directory
-            tar -C backend -czvf artifact.tar.gz .
+            tar -czvf artifact.tar.gz .
+            cp artifact.tar.gz .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
