@@ -400,9 +400,9 @@ jobs:
             #cd ..
             #cp backend/artifact.tar.gz .
 
-            #cd ..
+            cd ..
             #Zip the directory
-            #tar -czvf artifact.tar.gz .
+            tar -C backend -czvf artifact.tar.gz .
             #cp artifact.tar.gz .circleci/ansible/roles/deploy/files
             
 
@@ -414,8 +414,8 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure
-      #- destroy-environment
-      #- revert-migrations
+      - destroy-environment
+      - revert-migrations
 
 workflows:
   default:

@@ -40,7 +40,7 @@
 - name: "extract zipped artifact"
   become: true
   copy:
-    src: ~/project/artifact.tar.gz
+    src: artifact.tar.gz
     #remote_src: yes
     dest: ~/backend-app
 
