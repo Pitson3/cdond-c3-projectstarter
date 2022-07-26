@@ -396,9 +396,9 @@ jobs:
           command: |
             cd backend
             npm run build
-            #tar -czf artifact.tar.gz dist/* package*
-            #cd ..
-            #cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+            tar -czf artifact.tar.gz dist/* package*
+            cd ..
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
 
             #cd ..
             #Zip the directory
@@ -414,8 +414,8 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure
-      - destroy-environment
-      - revert-migrations
+      #- destroy-environment
+      #- revert-migrations
 
 workflows:
   default:
