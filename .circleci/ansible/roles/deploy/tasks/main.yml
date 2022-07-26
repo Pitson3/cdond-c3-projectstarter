@@ -38,8 +38,9 @@
     #mode: '0755'
 
 - name: "extract zipped artifact"
-  unarchive:
-    src: artifact.tar.gz
+  become: true
+  copy:
+    src: ~/project/artifact.tar.gz
     #remote_src: yes
     dest: ~/backend-app
 
