@@ -40,7 +40,7 @@
 - name: "extract zipped artifact"
   ansible.builtin.unarchive:
     src: artifact.tar.gz
-    #remote_src: yes
+    remote_src: yes
     dest: ~/backend-app
 
 - name: "install Node Dependences"
