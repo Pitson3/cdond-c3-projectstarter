@@ -39,9 +39,8 @@
 
 - name: "extract zipped artifact"
   become: true
-  copy:
+  unarchive:
     src: artifact.tar.gz
-    #remote_src: yes
     dest: ~/backend-app
 
 - name: "install Node Dependences"
@@ -53,6 +52,11 @@
   shell: |
     cd ~/backend-app/dist
     pm2 stop default
-    pm2 stop default
-    pm2 start npm -- start
-    #pm2 start main.js
+    #pm2 start npm -- start
+    pm2 start main.js
+  register: execute_node
+
+- name: "Configure pm2 to start as service"
+  become: true
+  shell: |
+    env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
