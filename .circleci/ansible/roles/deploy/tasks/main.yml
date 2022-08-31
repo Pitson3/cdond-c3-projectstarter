@@ -37,11 +37,12 @@
     state: directory
     #mode: '0755'
 
-- name: "extract zipped artifact"
-  become: true
-  unarchive:
-    src: artifact.tar.gz
-    dest: ~/backend-app
+#Already passed in config.yml
+# - name: "extract zipped artifact"
+#   become: true
+#   unarchive:
+#     src: artifact.tar.gz
+#     dest: ~/backend-app
 
 - name: "install Node Dependences"
   shell: |
