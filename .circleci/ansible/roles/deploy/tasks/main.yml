@@ -52,12 +52,12 @@
 - name: "Use PM2 to run backend-app"
   shell: |
     cd ~/backend-app/dist
-    pm2 stop default
+    #pm2 stop default
     #pm2 start npm -- start
-    pm2 start main.js
+    pm2 start -f ./main.js
   register: execute_node
 
-- name: "Configure pm2 to start as service"
-  become: true
-  shell: |
-    env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
+# - name: "Configure pm2 to start as service"
+#   become: true
+#   shell: |
+#     env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
