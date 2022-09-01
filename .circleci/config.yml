@@ -6,16 +6,21 @@ orbs:
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    #parameters:
+    parameters:
       # Add parameter here   
+      Workflow_ID:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
             # Your code here
-            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            echo "Destroying environment: << parameters.workflow_id >> "
+            aws cloudformation delete-stack --stack-name udapeople-backend-<<parameters.Workflow_ID>>
+            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.Workflow_ID>>
             #exit 1
 
   install_awscli:
@@ -436,11 +441,9 @@ jobs:
             export API_URL=http://${BACKEND_IP}:3030
             if curl -s $API_URL/api/status | grep "ok"
             then
-              # exit 0
-              return 0
+              exit 0
             else
-              # exit 1
-              return 1
+              exit 1
             fi
       - run:
           name: Frontend smoke test.
@@ -449,10 +452,9 @@ jobs:
             URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com/#/employees
             if curl -s $URL | grep "Welcome"
             then
-              # exit 0
-              return 1
+              exit 1
             else
-              # exit 1
+              exit 1
               return 1
             fi
       # Here's where you will add some code to rollback on failure 
