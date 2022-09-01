@@ -437,11 +437,9 @@ jobs:
             export API_URL=http://${BACKEND_IP}:3030
             if curl -s $API_URL/api/status | grep "ok"
             then
-              # exit 0
-              return 0
+              exit 0
             else
-              # exit 1
-              return 1
+              exit 1
             fi
       - run:
           name: Frontend smoke test.
@@ -450,11 +448,9 @@ jobs:
             URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com/#/employees
             if curl -s $URL | grep "Welcome"
             then
-              # exit 0
-              return 1
+              exit 1
             else
-              # exit 1
-              return 1
+              exit 1
             fi
       # Here's where you will add some code to rollback on failure 
       - destroy-environment
