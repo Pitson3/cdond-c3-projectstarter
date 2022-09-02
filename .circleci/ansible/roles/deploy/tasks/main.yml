@@ -31,11 +31,15 @@
     production: true
     state: present
 
-- name: "create backend-app directory"
+# - name: "create backend-app directory"
+#   file:
+#     path: ~/backend-app
+#     state: directory
+#     #mode: '0755'
+- name: "Create backend-app directory"
   file:
-    path: ~/backend-app
+    path: /home/ubuntu/backend-app
     state: directory
-    #mode: '0755'
 
 #Already passed in config.yml
 # - name: "extract zipped artifact"
@@ -43,20 +47,36 @@
 #   unarchive:
 #     src: artifact.tar.gz
 #     dest: ~/backend-app
+- name: 'extract the tar/zipped file'
+  unarchive:
+    src: /home/circleci/project/artifact.tar.gz
+    dest: /home/ubuntu/backend-app
 
-- name: "install Node Dependences"
+# - name: "install Node Dependences"
+#   shell: |
+#     cd ~/backend-app
+#     npm install
+# install backend dependencies
+- name: 'install backend-app dependencies'
+  become: true
   shell: |
-    cd ~/backend-app
+    cd /home/ubuntu/backend-app
     npm install
 
-- name: "Use PM2 to run backend-app"
+# - name: "Use PM2 to run backend-app"
+#   shell: |
+#     cd ~/backend-app/dist
+#     #pm2 stop default
+#     pm2 start npm -- start
+#     ##pm2 start main.js
+#     pm2 logs
+#   register: execute_node
+- name: 'start the app'
+  become: true
   shell: |
-    cd ~/backend-app/dist
-    #pm2 stop default
+    cd /home/ubuntu/backend-app
     pm2 start npm -- start
-    ##pm2 start main.js
-    pm2 logs
-  register: execute_node
+  register: backend_app
 
 # - name: "Configure pm2 to start as service"
 #   become: true
