@@ -467,14 +467,15 @@ jobs:
       - checkout
       - install_awscli
       - install_nodejs_13
-      # - run:
-      #     name: Persists/Retrieve the Old Workflow ID to kvdb and for the clean job
-      #     command: |
-      #       OLD_WORKFLOW_ID=$(aws cloudformation \
-      #                 list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-      #                 --no-paginate --output text)
-      #       echo "Old Wokflow ID: ${OLD_WORKFLOW_ID}"
-      #       curl https://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OLD_WORKFLOW_ID}"
+      - run:
+          name: Persists/Retrieve the Old Workflow ID to kvdb and for the clean job
+          command: |
+            export OldWorkflowID=$(aws cloudformation \
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text | tail -c 8)
+
+            echo "Old workflow ID: ${OldWorkflowID}"
+            curl http://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OldWorkflowID}"
       - run:
           name: Update cloudfront distribution
           command: |
@@ -482,7 +483,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --stack-name InitialStack \
-            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
             
             echo "Current Wokflow ID: ${CIRCLE_WORKFLOW_ID:0:7}"
@@ -501,9 +502,9 @@ jobs:
           command: |
             # Fetch the Old workflow ID
             export OldWorkflowID=$(aws cloudformation \
-                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-                    --no-paginate --output text)
-
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text | tail -c 8)
+            
             echo OldWorkflowID: "${OldWorkflowID}"
 
             echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -515,9 +516,13 @@ jobs:
             
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
             then
+              echo "s3://udapeople-${OldWorkflowID}"
+
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+            else
+              echo "No stack to delete"
             fi
 
 workflows:
