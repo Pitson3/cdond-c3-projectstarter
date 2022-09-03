@@ -468,24 +468,23 @@ jobs:
       - install_awscli
       - install_nodejs_13
       - run:
-          name: Update cloudfront distribution
+          name: Persists/Retrieve the Old Workflow ID to kvdb and for the clean job
           command: |
-            # your code here
-            #Old workflowID/save
             export OLD_WORKFLOW_ID=$(aws cloudformation \
                       list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                       --no-paginate --output text)
-            
+            echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
             curl https://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OLD_WORKFLOW_ID}"
-            #New code
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            # your code here
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
-            --parameter-overrides WorkflowID="udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --tags project=udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            --stack-name InitialStack \
+            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+            --tags project=udapeople
             
-            #Echo
-            echo "Old Wokflow ID: ${OLD_WORKFLOW_ID}"
             echo "Current Wokflow ID: ${CIRCLE_WORKFLOW_ID:0:7}"
       # Here's where you will add some code to rollback on failure  
       - destroy-environment
@@ -503,7 +502,7 @@ jobs:
             # Fetch the Old workflow ID
            
             # Fetch the Old workflow ID
-             export OldWorkflowID=$(aws cloudformation \
+            export OldWorkflowID=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
               --no-paginate --output text)
            
@@ -553,5 +552,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      #- cleanup:
+      #    requires: [cloudfront-update]
