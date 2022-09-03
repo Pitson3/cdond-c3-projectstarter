@@ -467,6 +467,14 @@ jobs:
       - checkout
       - install_awscli
       - install_nodejs_13
+      # - run:
+      #     name: Persists/Retrieve the Old Workflow ID to kvdb and for the clean job
+      #     command: |
+      #       OLD_WORKFLOW_ID=$(aws cloudformation \
+      #                 list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+      #                 --no-paginate --output text)
+      #       echo "Old Wokflow ID: ${OLD_WORKFLOW_ID}"
+      #       curl https://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OLD_WORKFLOW_ID}"
       - run:
           name: Update cloudfront distribution
           command: |
@@ -492,19 +500,18 @@ jobs:
           name: remove old stacks and files
           command: |
             # Fetch the Old workflow ID
-           
-            # Fetch the Old workflow ID
             export OldWorkflowID=$(aws cloudformation \
-              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-              --no-paginate --output text)
-           
+                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                    --no-paginate --output text)
+
+            echo OldWorkflowID: "${OldWorkflowID}"
+
+            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+
             # Fetch the stack names          
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
                     --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
-            echo Stack names: "${STACKS[@]}" 
-            
-            echo OldWorkflowID: "${OldWorkflowID}"
-            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+            echo Stack names: "${STACKS[@]}"          
             
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
             then
@@ -544,5 +551,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      #- cleanup:
-      #    requires: [cloudfront-update]
+      - cleanup:
+         requires: [cloudfront-update]
