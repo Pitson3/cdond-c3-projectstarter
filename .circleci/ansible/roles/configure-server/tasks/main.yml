@@ -1,41 +1,41 @@
 ---
 - name: "update apt packages."
-  become: yes
-  apt:
-    update_cache: yes
+    become: true
+    apt:
+     update_cache: yes
 
 - name: "upgrade packages"
-  become: yes
-  apt:
+    become: true
+    apt:
     upgrade: yes
 
 - name: "Install Python"
-   become: true
-   apt:
-     name: ["python"]
-     state: latest
-     update_cache: yes
+    become: true
+    apt:
+      name: ["python"]
+      state: latest
+      update_cache: yes
 
 - name: "Install Nodejs"
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
+    become: true
+    apt:
+      name: ["nodejs", "npm"]
+      state: latest
+      update_cache: yes
 
 - name: "install pm2"
-  become: true
-  npm:
-    name: pm2
-    global: true
-    production: true
-    state: present
+    become: true
+    npm:
+      name: pm2
+      global: yes
+      production: yes
+      state: present
 
 #Adapted from the classroom solution
-- name: "create ~/web"
-  file:
-    path: ~/web
-    state: directory
+# - name: "create ~/web"
+  # file:
+    # path: ~/web
+    # state: directory
    # mode: '0755'
 
 #- name: "Install index.js"
