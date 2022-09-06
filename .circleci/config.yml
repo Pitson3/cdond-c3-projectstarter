@@ -236,7 +236,8 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           # You can get this ID in the section where you registered the SSH Key
-          fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
+          fingerprints: 
+            - "64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49" 
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -365,7 +366,8 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           # You can get this ID in the section where you registered the SSH Key
-          fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
+          fingerprints: 
+            - "64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49" 
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -440,7 +442,7 @@ jobs:
             export API_URL=http://${BACKEND_IP}:3030
             echo $API_URL
             sleep 2m
-            if curl -s $API_URL/api/status | grep "ok"
+            if curl --connect-timeout 30 $API_URL/api/status | grep "ok"
             then
               exit 0
             else
@@ -451,7 +453,7 @@ jobs:
           command: |
             # your code here
             URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com/#/employees
-            if curl -s $URL | grep "Welcome"
+            if curl --connect-timeout 30 $URL | grep "Welcome"
             then
               exit 0
             else
