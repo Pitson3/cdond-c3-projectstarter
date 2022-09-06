@@ -236,7 +236,7 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
                 # You can get this ID in the section where you registered the SSH Key
-                fingerprints: ["3d:33:b7:18:c5:8d:48:b3:5a:f6:83:aa:69:23:82:e6"] 
+                fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -282,8 +282,8 @@ jobs:
             # Run and save the migration output
             #npm audit fix --force --audit-level=critical
             #npm audit --audit-level=critical
-            #npm run migrations > migrations_dump.txt
-            #cat migrations_dump.txt
+            npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
             #exit 1
       - run:
           name: Send migration results to  kvdb.io
@@ -364,7 +364,7 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
                 # You can get this ID in the section where you registered the SSH Key
-                fingerprints: ["50:f5:a9:48:6e:b6:d8:82:3b:53:08:ed:d6:a6:c6:a6"] 
+                fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
       # attach workspace
       - attach_workspace:
           at: ~/
