@@ -12,7 +12,7 @@
 - name: "Install Python"
   become: true
   apt:
-    name: ["python"]
+    name: ["python3"]
     state: latest
     update_cache: yes
 
