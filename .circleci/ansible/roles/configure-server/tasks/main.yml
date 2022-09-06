@@ -9,12 +9,12 @@
   apt:
     upgrade: yes
 
-- name: "Install Python"
-  become: true
-  apt:
-    name: ["python"]
-    state: latest
-    update_cache: yes
+# - name: "Install Python"
+#   become: true
+#   apt:
+#     name: ["python"]
+#     state: latest
+#     update_cache: yes
 
 - name: "Install Nodejs"
   become: true
