@@ -235,8 +235,8 @@ jobs:
       - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
-                # You can get this ID in the section where you registered the SSH Key
-                fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
+          # You can get this ID in the section where you registered the SSH Key
+          fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -282,6 +282,7 @@ jobs:
             # Run and save the migration output
             #npm audit fix --force --audit-level=critical
             #npm audit --audit-level=critical
+            echo "Next: Running Migrations"
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
             #exit 1
@@ -363,8 +364,8 @@ jobs:
       - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
-                # You can get this ID in the section where you registered the SSH Key
-                fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
+          # You can get this ID in the section where you registered the SSH Key
+          fingerprints: ["64:35:a3:e8:14:05:ba:1b:58:95:ce:f5:c4:35:6b:49"] 
       # attach workspace
       - attach_workspace:
           at: ~/
