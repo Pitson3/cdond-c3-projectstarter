@@ -1,2 +1,5 @@
 URL01: https://github.com/Pitson3/cdond-c3-projectstarter
-URL02: https://us-east-1.console.aws.amazon.com/s3/home?region=us-east-1&bucket=udapeople-28bdb09
+URL02: http://udapeople-30cf51b.s3-website-us-east-1.amazonaws.com/#/employees
+URL03: http://dqrzbkpcfahpk.cloudfront.net/#/employees/new
+
+
