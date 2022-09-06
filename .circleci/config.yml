@@ -293,8 +293,8 @@ jobs:
             # Your code here
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-                # If you are using kvdb.io, generate the bucket ID in your local terminal first
-                curl https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+              # If you are using kvdb.io, generate the bucket ID in your local terminal first
+              curl https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
             #exit 1
        # Here's where you will add some code to rollback on failure 
@@ -560,5 +560,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      - cleanup:
-         requires: [cloudfront-update]
+      # - cleanup:
+      #    requires: [cloudfront-update]
